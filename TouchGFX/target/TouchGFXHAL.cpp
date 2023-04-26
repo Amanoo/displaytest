@@ -21,6 +21,15 @@
 /* USER CODE END Header */
 
 #include <TouchGFXHAL.hpp>
+#include "stm32l562e_discovery_lcd.h"
+#include <touchgfx/hal/OSWrappers.hpp>
+extern TIM_HandleTypeDef htim16;
+
+extern "C"  void Update_VSync(void)
+{
+	touchgfx::HAL::getInstance()->vSync();
+	touchgfx::OSWrappers::signalVSync();
+}
 
 /* USER CODE BEGIN TouchGFXHAL.cpp */
 
@@ -35,6 +44,45 @@ void TouchGFXHAL::initialize()
     // Please note, HAL::initialize() must be called to initialize the framework.
 
     TouchGFXGeneratedHAL::initialize();
+    /* Initializing LCD drivers */
+	if (BSP_LCD_Init(0, LCD_ORIENTATION_PORTRAIT) != BSP_ERROR_NONE)
+    {
+        assert(0 && "Failed to initialize LCD Controller");
+    }
+
+	BSP_LCD_DisplayOn(0);
+	/**
+	  * @brief  Send RGB data to select the LCD GRAM.
+	  * @param  Instance:     LCD Instance.
+	  * @param  UseDMA:       Specifies if DMA will be used for data Transferring.
+	  * @param  pData:        Pointer to data to write to LCD GRAM.
+	  * @param  Xpos:         Specifies the X position.
+	  * @param  Ypos:         Specifies the Y position.
+	  * @param  Height:       Specifies the height of the rectangle to fill.
+	  * @param  Width:        Specifies the width of the rectangle to fill.
+	  * @retval int32_t:      BSP status.
+	  */
+
+	/**
+	  * @brief  Fill rectangle with RGB buffer.
+	  * @param  Instance LCD Instance.
+	  * @param  Xpos X position on LCD.
+	  * @param  Ypos Y position on LCD.
+	  * @param  pData Pointer on RGB pixels buffer.
+	  * @param  Width Width of the rectangle.
+	  * @param  Height Height of the rectangle.
+	  * @retval BSP status.*/
+// if(  BSP_LCD_FillRGBRect(0,
+//		 0,
+//		 0,
+//		 (uint8_t *) 0x20030000,
+//		 240,
+//		 240)
+//		 != BSP_ERROR_NONE)
+// {
+//     assert(0 && "Failed to initialize LCD Controller");
+// }
+ HAL_TIM_Base_Start_IT(&htim16);
 }
 
 /**
@@ -86,7 +134,20 @@ void TouchGFXHAL::flushFrameBuffer(const touchgfx::Rect& rect)
     // use advanceFrameBufferToRect(uint8_t* fbPtr, const touchgfx::Rect& rect)
     // defined in TouchGFXGeneratedHAL.cpp
 
-    TouchGFXGeneratedHAL::flushFrameBuffer(rect);
+    //TouchGFXGeneratedHAL::flushFrameBuffer(rect);
+	/* Set Cursor */
+
+
+	    if(  BSP_LCD_FillRGBRect(0,
+				 rect.x,
+				 rect.y,
+				 (uint8_t *) getClientFrameBuffer(),
+			 rect.width,
+			 rect.height)
+	   		 != BSP_ERROR_NONE)
+	    {
+	        assert(0 && "Failed to initialize LCD Controller");
+	    }
 }
 
 bool TouchGFXHAL::blockCopy(void* RESTRICT dest, const void* RESTRICT src, uint32_t numBytes)

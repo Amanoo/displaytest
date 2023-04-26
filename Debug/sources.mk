@@ -34,9 +34,12 @@ CPP_DEPS :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
-DISPLAY/Target \
-Drivers/BSP/Components/st7789v \
+Drivers/BSP/Components/st7789h2 \
+Drivers/BSP \
+Drivers/CMSIS \
 Drivers/STM32L5xx_HAL_Driver/Src \
+Drivers/STM32L5xx_HAL_Driver \
+Middlewares/FreeRTOS \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
 Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM33_NTZ/non_secure \

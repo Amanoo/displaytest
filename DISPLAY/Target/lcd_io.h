@@ -27,7 +27,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "lcd.h"
 #include "lcd_conf.h"
-#include "../st7789v/st7789v.h"
+#include "../st7789h2/st7789h2.h"
 
 /** @addtogroup DISPLAY DISPLAY
   * @brief      DISPLAY Software Expansion Pack.
@@ -72,10 +72,10 @@
   * @brief      Supported LCD Orientations.
   * @{
   */
-#define LCD_ORIENTATION_PORTRAIT            ST7789V_ORIENTATION_PORTRAIT          /*!< \hideinitializer Portrait orientation choice of LCD screen               */
-#define LCD_ORIENTATION_PORTRAIT_ROT180     ST7789V_ORIENTATION_PORTRAIT_ROT180   /*!< \hideinitializer Portrait rotated 180° orientation choice of LCD screen  */
-#define LCD_ORIENTATION_LANDSCAPE           ST7789V_ORIENTATION_LANDSCAPE         /*!< \hideinitializer Landscape orientation choice of LCD screen              */
-#define LCD_ORIENTATION_LANDSCAPE_ROT180    ST7789V_ORIENTATION_LANDSCAPE_ROT180  /*!< \hideinitializer Landscape rotated 180° orientation choice of LCD screen */
+#define LCD_ORIENTATION_PORTRAIT            ST7789H2_ORIENTATION_PORTRAIT          /*!< \hideinitializer Portrait orientation choice of LCD screen               */
+#define LCD_ORIENTATION_PORTRAIT_ROT180     ST7789H2_ORIENTATION_PORTRAIT_ROT180   /*!< \hideinitializer Portrait rotated 180° orientation choice of LCD screen  */
+#define LCD_ORIENTATION_LANDSCAPE           ST7789H2_ORIENTATION_LANDSCAPE         /*!< \hideinitializer Landscape orientation choice of LCD screen              */
+#define LCD_ORIENTATION_LANDSCAPE_ROT180    ST7789H2_ORIENTATION_LANDSCAPE_ROT180  /*!< \hideinitializer Landscape rotated 180° orientation choice of LCD screen */
 /**
   * @}
   */

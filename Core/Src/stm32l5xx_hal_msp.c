@@ -608,7 +608,8 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     /* Peripheral clock enable */
     __HAL_RCC_TIM16_CLK_ENABLE();
   /* USER CODE BEGIN TIM16_MspInit 1 */
-
+  HAL_NVIC_SetPriority(TIM16_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(TIM16_IRQn);
   /* USER CODE END TIM16_MspInit 1 */
   }
   else if(htim_base->Instance==TIM17)

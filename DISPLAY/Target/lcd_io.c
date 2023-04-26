@@ -58,8 +58,8 @@
 
 static void             *LcdCompObj = NULL;
 static LCD_Drv_t        *LcdDrv = NULL;
-static ST7789V_IO_t     IOCtx = { 0 };
-static ST7789V_Object_t ObjCtx = { 0 };
+static ST7789H2_IO_t     IOCtx = { 0 };
+static ST7789H2_Object_t ObjCtx = { 0 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
@@ -428,20 +428,7 @@ int32_t BSP_LCD_WriteDataDMA(uint32_t Instance, uint8_t *pData, uint32_t Length)
   {
     ret = BSP_ERROR_BUSY;
   }
-  else
-  {
-    if(IOCtx.SendDataDMA)
-    {
-      if(IOCtx.SendDataDMA(pData, Length) < 0)
-      {
-        ret = BSP_ERROR_COMPONENT_FAILURE;
-      }
-      else
-      {
-        ret = BSP_ERROR_NONE;
-      }
-    }
-  }
+
 
   return ret;
 }
@@ -592,7 +579,7 @@ __WEAK void BSP_LCD_SignalTearingEffectEvent(uint32_t Instance, uint8_t State, u
 /* USER CODE END PF */
 
 /**
-  * @brief  Register Bus IOs if ST7789V ID is OK
+  * @brief  Register Bus IOs if ST7789H2 ID is OK
   * @param  Instance:     LCD Instance.
   * @param  Orientation:  LCD Orientation
   * @retval int32_t:      BSP status.
@@ -600,7 +587,7 @@ __WEAK void BSP_LCD_SignalTearingEffectEvent(uint32_t Instance, uint8_t State, u
 static int32_t LCD_Probe(uint32_t Instance, uint32_t Orientation)
 {
   int32_t ret = BSP_ERROR_NONE;
-  ST7789V_InitParams_t ST7789V_InitParams;
+  ST7789H2_InitParams_t ST7789H2_InitParams;
   uint32_t UserBaudRatePrescaler = 0;
   uint32_t id = 0;
 
@@ -610,13 +597,13 @@ static int32_t LCD_Probe(uint32_t Instance, uint32_t Orientation)
   IOCtx.ReadReg          = LCD_IO_ReadReg;
   IOCtx.WriteReg         = LCD_IO_WriteReg;
   IOCtx.SendData         = LCD_IO_SendData;
-  IOCtx.SendDataDMA      = LCD_IO_SendDataDMA;
-  IOCtx.RecvData         = LCD_IO_RecvData;
+ // IOCtx.SendDataDMA      = LCD_IO_SendDataDMA;
+ // IOCtx.RecvData         = LCD_IO_RecvData;
   IOCtx.RecvDataDMA      = LCD_IO_RecvDataDMA;
   IOCtx.GetTick          = LCD_IO_GetTick;
   IOCtx.Delay            = LCD_IO_Delay;
 
-  if(ST7789V_RegisterBusIO(&ObjCtx, &IOCtx) != ST7789V_OK)
+  if(ST7789H2_RegisterBusIO(&ObjCtx, &IOCtx) != ST7789H2_OK)
   {
     ret = BSP_ERROR_UNKNOWN_COMPONENT;
   }
@@ -627,29 +614,29 @@ static int32_t LCD_Probe(uint32_t Instance, uint32_t Orientation)
     ret = LCD_SetupBaudRateForReadOperations(&UserBaudRatePrescaler);
     if(ret == BSP_ERROR_NONE)
     {
-      if((ST7789V_LCD_Driver.ReadID(LcdCompObj, &id) == ST7789V_OK) && (id == ST7789V_ID))
+      if((ST7789H2_LCD_Driver.ReadID(LcdCompObj, &id) == ST7789H2_OK) && (id == ST7789H2_ID))
       {
         ret = LCD_SetupBaudRateForWriteOperations(UserBaudRatePrescaler);
         if(ret == BSP_ERROR_NONE)
         {
           /* LCD Initialization */
-          LcdDrv = (LCD_Drv_t *)&ST7789V_LCD_Driver;
+          LcdDrv = (LCD_Drv_t *)&ST7789H2_LCD_Driver;
 
           ObjCtx.IsInitialized = 0;
 
-          ST7789V_InitParams.Endian         = ST7789V_ENDIAN_LITTLE;
-          ST7789V_InitParams.SwapRB         = 0;
-          ST7789V_InitParams.ColorCoding    = ST7789V_FORMAT_DEFAULT;
-          ST7789V_InitParams.Orientation    = Orientation;
-          ST7789V_InitParams.TEScanline     = 0;
-          ST7789V_InitParams.TEMode         = ST7789V_TE_DISABLED;
-          ST7789V_InitParams.Timings.hsync  = ST7789V_HSYNC;
-          ST7789V_InitParams.Timings.hbp    = ST7789V_HBP;
-          ST7789V_InitParams.Timings.hfp    = ST7789V_HFP;
-          ST7789V_InitParams.Timings.vsync  = ST7789V_VSYNC;
-          ST7789V_InitParams.Timings.vbp    = ST7789V_VBP;
-          ST7789V_InitParams.Timings.vfp    = ST7789V_VFP;
-          if(LcdDrv->Init(LcdCompObj, &ST7789V_InitParams) != ST7789V_OK)
+          ST7789H2_InitParams.Endian         = ST7789H2_ENDIAN_LITTLE;
+          ST7789H2_InitParams.SwapRB         = 0;
+          ST7789H2_InitParams.ColorCoding    = ST7789H2_FORMAT_DEFAULT;
+          ST7789H2_InitParams.Orientation    = Orientation;
+          ST7789H2_InitParams.TEScanline     = 0;
+          ST7789H2_InitParams.TEMode         = ST7789H2_TE_DISABLED;
+          ST7789H2_InitParams.Timings.hsync  = ST7789H2_HSYNC;
+          ST7789H2_InitParams.Timings.hbp    = ST7789H2_HBP;
+          ST7789H2_InitParams.Timings.hfp    = ST7789H2_HFP;
+          ST7789H2_InitParams.Timings.vsync  = ST7789H2_VSYNC;
+          ST7789H2_InitParams.Timings.vbp    = ST7789H2_VBP;
+          ST7789H2_InitParams.Timings.vfp    = ST7789H2_VFP;
+          if(LcdDrv->Init(LcdCompObj, &ST7789H2_InitParams) != ST7789H2_OK)
           {
             ret = BSP_ERROR_COMPONENT_FAILURE;
           }
